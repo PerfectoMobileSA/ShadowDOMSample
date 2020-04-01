@@ -12,6 +12,7 @@ There are several prerequisite dependencies you should install on your machine p
 
 * [Maven](https://maven.apache.org/)
 
+* Download the OS specific chromedriver into drivers folder of the project and update the  webdriver.chrome.driver as applicable
 
 Eclipse users should also install:
 
