@@ -39,6 +39,7 @@ import com.perfecto.reportium.model.Project;
 import com.perfecto.reportium.test.TestContext;
 import com.perfecto.reportium.test.result.TestResultFactory;
 import com.perfecto.utils.ShadowDomUtils;
+import com.perfecto.utils.Utils;
 
 public class TestShadowDOM {
 
@@ -73,7 +74,6 @@ public class TestShadowDOM {
 			params2.put("parentElement", innerDOMElement1);
 			params2.put("innerSelector", "shop-button a");
 			shadowUtls.clickElementShadowDOM(((RemoteWebDriver)driver), params2);
-			//			((JavascriptExecutor)driver).executeScript("arguments[0].click();", innerDOMElement2);
 		}
 
 		if(context.getCurrentXmlTest().getParameter("browser").equalsIgnoreCase("perfecto"))
@@ -100,7 +100,7 @@ public class TestShadowDOM {
 		driver.get("https://www.virustotal.com/gui/home/url");
 
 		WebElement parentShadowEle = driver.findElement(By.xpath("//vt-virustotal-app"));
-		
+
 		Map<String, Object> params = new HashMap<>();
 		params.put("parentElement", parentShadowEle);
 		params.put("innerSelector", "home-view.iron-selected");
@@ -115,8 +115,8 @@ public class TestShadowDOM {
 		params3.put("parentElement", innerDOMElement2);
 		params3.put("innerSelector", "input#input");
 		params3.put("characterSequence", "https://www.google.com");
-		shadowUtls.sendKeyShadowDOM((RemoteWebDriver)driver, params3);
-		
+		shadowUtls.sendKeysShadowDOM((RemoteWebDriver)driver, params3);
+
 		Thread.sleep(2000);
 		WebElement urlTextBox = shadowUtls.findElementShadowDOM(((RemoteWebDriver)driver), params3);
 		String output = (String)((JavascriptExecutor)driver).executeScript("return arguments[0].value", urlTextBox);
@@ -124,13 +124,13 @@ public class TestShadowDOM {
 		if(context.getCurrentXmlTest().getParameter("browser").equalsIgnoreCase("perfecto"))
 			report.reportiumAssert("Verify entered URL", output.equals("https://www.google.com"));
 	}
-	
+
 
 	@BeforeClass
-	public void beforeClass(ITestContext context) throws MalformedURLException {
+	public void beforeClass(ITestContext context) throws Exception {
 		createDriver(context);
 	}
-	
+
 	@BeforeMethod
 	public void beforeMethod(Method method) {
 		if(context.getCurrentXmlTest().getParameter("browser").equalsIgnoreCase("perfecto"))
@@ -150,13 +150,19 @@ public class TestShadowDOM {
 				report.testStop(TestResultFactory.createFailure(result.getThrowable()));
 		}
 	}
-	
+
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
+		String reportURL = report.getReportUrl();
+		System.out.println(reportURL);
 	}
 
-	public void createDriver(ITestContext context) throws MalformedURLException {
+	public void createDriver(ITestContext context) throws Exception {
+		//Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
+		String cloudName = "<<cloud name>>";
+		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
+		String securityToken = "<<SECURITY TOKEN>>";
 		this.context = context;
 		String browser = context.getCurrentXmlTest().getParameter("browser").toUpperCase();
 		switch (browser) {
@@ -166,20 +172,29 @@ public class TestShadowDOM {
 			capabilities.setCapability("platformVersion", context.getCurrentXmlTest().getParameter("platformVersion"));
 			capabilities.setCapability("model", context.getCurrentXmlTest().getParameter("model"));
 			capabilities.setCapability("deviceName", context.getCurrentXmlTest().getParameter("deviceName"));
-			capabilities.setCapability("securityToken",context.getCurrentXmlTest().getParameter("securityToken"));
+			capabilities.setCapability("securityToken",Utils.fetchSecurityToken(securityToken));
 			capabilities.setCapability("browserName", context.getCurrentXmlTest().getParameter("browserName"));
 			capabilities.setCapability("browserVersion",context.getCurrentXmlTest().getParameter("browserVersion"));
 			capabilities.setCapability("location", context.getCurrentXmlTest().getParameter("location"));
 			capabilities.setCapability("resolution",context.getCurrentXmlTest().getParameter("resolution"));
 			capabilities.setCapability("deviceType",context.getCurrentXmlTest().getParameter("deviceType"));
-			String host = context.getCurrentXmlTest().getParameter("cloudUrl");
 			capabilities.setCapability("takesScreenshot", Boolean.parseBoolean(context.getCurrentXmlTest().getParameter("takesScreenshot")));
-			driver = new RemoteWebDriver(new URL("https://"+host+"/nexperience/perfectomobile/wd/hub/fast"),capabilities);
-			PerfectoExecutionContext perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
-					.withProject(new Project("Shadow DOM", "1.0"))
-					.withJob(new Job(context.getCurrentXmlTest().getParameter("jobName"), Integer.parseInt(context.getCurrentXmlTest().getParameter("jobNumber"))))
-					.withWebDriver(driver)
-					.build();
+			driver = new RemoteWebDriver(new URL("https://" + Utils.fetchCloudName(cloudName) + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"),capabilities);
+			PerfectoExecutionContext perfectoExecutionContext;
+			if(System.getProperty("reportium-job-name") != null) {
+				perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
+						.withProject(new Project("My Project", "1.0"))
+						.withJob(new Job(System.getProperty("reportium-job-name") , Integer.parseInt(System.getProperty("reportium-job-number"))))
+						.withContextTags("tag1")
+						.withWebDriver(driver)
+						.build();
+			} else {
+				perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
+						.withProject(new Project("My Project", "1.0"))
+						.withContextTags("tag1")
+						.withWebDriver(driver)
+						.build();
+			}
 			report = new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
 			break;
 		case "CHROME":
@@ -192,6 +207,7 @@ public class TestShadowDOM {
 		if(context.getCurrentXmlTest().getParameter("deviceType").equalsIgnoreCase("web"))
 			driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 
 	}
 

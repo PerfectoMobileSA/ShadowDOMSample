@@ -3,11 +3,6 @@
 <suite thread-count="10" name="GoogleTest" parallel="tests">
 	<!-- <suite name="Smoke Test"> -->
 
-	<parameter name="cloudUrl" value="Your Cloud URL" />
-	<parameter name="securityToken" value="Your SecurityToken" />
-	<parameter name="jobName" value="Shadow DOM Test" />
-	<parameter name="jobNumber" value="17" />
-
 	<test name="Test Shadow DOM Android" enabled="true">
 		<parameter name="browser" value="perfecto" />
 		<parameter name="deviceType" value="mobile" />

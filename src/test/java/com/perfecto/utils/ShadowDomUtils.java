@@ -14,8 +14,18 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+/** 
+* 
+* @author Dushyantan Satike 
+*/
 public class ShadowDomUtils {
 
+	/**
+	 * Finds first shadow DOM element matching the CSS selector and returns it
+	 * @param driver
+	 * @param params
+	 * @return WebElement
+	 */
 	public WebElement findElementShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
 		WebElement shadowRoot = (WebElement)params.get("parentElement");
 		String innerElSelector = params.get("innerSelector").toString();
@@ -50,6 +60,13 @@ public class ShadowDomUtils {
 		return element;
 	}
 
+	/**
+	 * 
+	 * Performs click operation on the first matching shadow DOM element of the specified CSS locator
+	 * @param driver
+	 * @param params
+	 * @return
+	 */
 	public void clickElementShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
 		WebElement shadowRoot = (WebElement)params.get("parentElement");
 		String innerElSelector = params.get("innerSelector").toString();
@@ -68,7 +85,14 @@ public class ShadowDomUtils {
 		driver.executeScript(getInnerEl, shadowRoot);
 	}
 
-	public static String getAttributeShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
+	/**
+	 * 
+	 * Returns the value of the given attribute of the first matching shadow DOM element of the specified CSS locator. 
+	 * @param driver
+	 * @param params
+	 * @return String
+	 */
+	public String getAttributeShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
 		WebElement shadowRoot = (WebElement)params.get("parentElement");
 		String innerElSelector = params.get("innerSelector").toString();
 		String property = params.get("attribute").toString();
@@ -87,6 +111,13 @@ public class ShadowDomUtils {
 		return ((WebElement) driver.executeScript(getInnerEl, shadowRoot)).getAttribute(property);
 	}
 
+	/**
+	 * 
+	 * Finds all the shadow DOM element matching the CSS selector and returns. 
+	 * @param driver
+	 * @param params
+	 * @return List<WebElement>
+	 */
 	public List<WebElement> findElementsShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
 		WebElement shadowRoot = (WebElement)params.get("parentElement");
 		String innerElSelector = params.get("innerSelector").toString();
@@ -124,7 +155,14 @@ public class ShadowDomUtils {
 		return elementList;
 	}
 	
-	public static String getTextShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
+	/**
+	 * 
+	 * Returns text of the shadow DOM element matching the CSS selector and returns. 
+	 * @param driver
+	 * @param params
+	 * @return String
+	 */
+	public String getTextShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
 		WebElement shadowRoot = (WebElement)params.get("parentElement");
 		String innerElSelector = params.get("innerSelector").toString();
 		String getInnerEl = "return arguments[0].shadowRoot.querySelector('" + innerElSelector + "').innerText;";
@@ -142,7 +180,14 @@ public class ShadowDomUtils {
 		return ((String) driver.executeScript(getInnerEl, shadowRoot));
 	}
 	
-	public void sendKeyShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
+	/**
+	 * 
+	 * Performs send keys operation on the shadow DOM element matching the CSS selector and returns. 
+	 * @param driver
+	 * @param params
+	 * @return
+	 */
+	public void sendKeysShadowDOM(RemoteWebDriver driver, Map<String, Object> params) {
 		WebElement shadowRoot = (WebElement)params.get("parentElement");
 		String innerElSelector = params.get("innerSelector").toString();
 		String input = params.get("characterSequence").toString();

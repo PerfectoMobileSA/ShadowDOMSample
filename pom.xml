@@ -75,7 +75,6 @@
 	</build>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
@@ -87,8 +86,6 @@
 			<artifactId>testng</artifactId>
 			<version>6.9.10</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.seleniumhq.selenium</groupId> <artifactId>selenium-java</artifactId> 
-			<version>3.141.59</version> </dependency> -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-api</artifactId>
@@ -99,14 +96,6 @@
 			<artifactId>selenium-remote-driver</artifactId>
 			<version>3.141.59</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-support -->
-		<!-- <dependency> <groupId>org.seleniumhq.selenium</groupId> <artifactId>selenium-support</artifactId> 
-			<version>3.141.59</version> </dependency> -->
-
-		<!-- <dependency> <groupId>com.perfectomobile</groupId> <artifactId>pm-webdriver</artifactId> 
-			<version>${perfectomobile-version}</version> </dependency> <dependency> <groupId>com.perfectomobile</groupId> 
-			<artifactId>http-client</artifactId> <version>${perfectomobile-version}</version> 
-			</dependency> -->
 		<dependency>
 			<groupId>com.perfecto.reporting-sdk</groupId>
 			<artifactId>reportium-java</artifactId>
