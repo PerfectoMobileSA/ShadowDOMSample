@@ -12,9 +12,6 @@ There are several prerequisite dependencies you should install on your machine p
 
 * [Maven](https://maven.apache.org/)
 
-* Local Appium Server running at http://127.0.0.1 ,  port: 4723
-
-* Download the OS specific chromedriver into drivers folder of the project and update the  webdriver.chrome.driver as applicable
 
 Eclipse users should also install:
 
@@ -30,7 +27,6 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
  
 #### Optional Installations
 * For source control management, you can install [git](https://git-scm.com/downloads).
-* To be able to interact with a real device from Perfecto cloud directly from your IDE, and use Perfecto Reporting, install [Perfecto CQ Lab Plugin](https://www.perfectomobile.com/ni/resources/downloads/add-ins-plugins-and-extensions) for your IDE.
 
 ## Downloading the Sample Project
 
@@ -38,22 +34,14 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 
 * After downloading and unzipping the project to your computer, open it from your IDE by choosing the folder containing the pom.xml 
 
-**********************
-# Getting Started
-
-* Download the OS specific chromedriver into drivers folder of the project and update the webdriver.chrome.driver system path where ever applicable
-
-* Local Appium Server should be running at http://127.0.0.1 ,  port: 4723
-
 
 ## Running sample as is
 
+* Open testng.xml file.</p>
 
-* Open testng.xml file</p>
-
-* Add cloud URL in "cloudUrl" parameter</br>  
+* Add cloud URL in "cloudUrl" parameter.</br>  
 		
-* Add Security Token in "securityToken" parameter</br>  
+* Add Security Token in "securityToken" parameter.</br>  
 
 Note: Refer to official documentation on how to execute from eclipse / IntelliJ. </br>
 * Run pom.xml with the below maven goals & properties when: </p>
@@ -68,7 +56,7 @@ Note: Refer to official documentation on how to execute from eclipse / IntelliJ.
 
 ## Shadow DOM methods:
 
-* We are using [Shop Polymer](https://shop.polymer-project.org/) in this sample project.
+* We are using [Shop Polymer](https://shop.polymer-project.org/) website as an example in this sample project.
 
 ### findElementShadowDOM:
 This method finds first web element matching the CSS selector and returns it.
