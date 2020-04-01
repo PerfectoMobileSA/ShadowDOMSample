@@ -38,11 +38,15 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 
 ## Running sample as is
 
-* Open testng.xml file.</p>
+* Open TestShadowDOM.java </p>
 
-* Add cloud URL in "cloudUrl" parameter.</br>  
-		
-* Add Security Token in "securityToken" parameter.</br>  
+* Search for the below line and replace `<<cloud name>>` with your perfecto cloud name (e.g. demo) or pass it as maven properties: `-DcloudName=<<cloud name>>`</br>  
+		&nbsp;&nbsp;	&nbsp;&nbsp; String cloudName = `"<<cloud name>>"`;
+		</br>
+		</p>
+* Search for the below line and replace `<<SECURITY TOKEN>>` with your perfecto [security token](https://developers.perfectomobile.com/display/PD/Generate+security+tokens) or pass it as maven properties: `-DsecurityToken=<<SECURITY TOKEN>>` </br></p>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String securityToken = `"<<SECURITY TOKEN>>"`;
+	</br>
 
 Note: Refer to official documentation on how to execute from eclipse / IntelliJ. </br>
 * Run pom.xml with the below maven goals & properties when: </p>
@@ -51,16 +55,35 @@ Note: Refer to official documentation on how to execute from eclipse / IntelliJ.
 		clean
 		install
 		
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. If credentials are passed as parameters:
+		
+		clean
+		install
+		-DcloudName=${cloudName}
+		-DsecurityToken=${securityToken}
+		-DtestngXmlFile=testng.xml
 </p>
 
-* Maven will automatically kick start the parallel execution of different examples inside perfecto package in parallel. </p>
+* Maven will automatically kick start the parallel execution of different examples inside perfecto package in parallel if `-DtestngXmlFile=testng.xml` is passed as maven properties (this is the default behaviour) </p>
+
+* CI dashboard integration can be performed by supplying the below properties to top-level Maven Targets:
+
+		clean
+		install
+		-DcloudName=${cloudName}
+		-DtestngXmlFile=testng.xml
+		-DsecurityToken=${securityToken}
+		-Dreportium-job-name=${JOB_NAME} 
+		-Dreportium-job-number=${BUILD_NUMBER} 
+		-Dreportium-job-branch=${GIT_BRANCH} 
+		-Dreportium-tags=${myTag}
 
 ## Shadow DOM methods:
 
 * We are using [Shop Polymer](https://shop.polymer-project.org/) website as an example in this sample project.
 
 ### findElementShadowDOM:
-This method finds first web element matching the CSS selector and returns it.
+This method finds first shadow DOM element matching the CSS selector and returns it.
 
 ### Example: -
     WebElement parentShadowElement = driver.findElement(By.cssSelector("[page='home']"));
@@ -76,7 +99,7 @@ This method finds first web element matching the CSS selector and returns it.
   | innerSelector (Mandatory) | String | CSS-selector of the shadow DOM inner element to search for |
  
 ### findElementsShadowDOM:
-This method finds all the web elements matching the CSS selector and returns the list.
+This method finds all the shadow DOM elements matching the CSS selector and returns the list.
 
 ### Example: -
     WebElement parentShadowElement = driver.findElement(By.cssSelector("[page='home']"));
@@ -93,7 +116,7 @@ This method finds all the web elements matching the CSS selector and returns the
   | innerSelector (Mandatory) | String | CSS-selector of the shadow DOM inner element to search for |
 
 ### clickElementShadowDOM:
-This method performs click operation on the first matching element of the specified CSS locator.
+This method performs click operation on the first matching shadow DOM element of the specified CSS locator.
 
 ### Example: -
     WebElement parentShadowElement = driver.findElement(By.cssSelector("[page='home']"));
@@ -110,7 +133,7 @@ This method performs click operation on the first matching element of the specif
   | innerSelector (Mandatory) | String | CSS-selector of the shadow DOM inner element to search for |
 
 ### sendKeysShadowDOM:
-This method enters text on the first matching element of the specified CSS locator.
+This method enters text on the first matching shadow DOM element of the specified CSS locator.
 
 ### Example: -
     WebElement parentShadowElement = driver.findElement(By.cssSelector("[page='home']"));
@@ -118,7 +141,7 @@ This method enters text on the first matching element of the specified CSS locat
     params.put("parentElement", parentShadowElement);
     params.put("innerSelector", "div#tabContainer input#id1");
     params.put("characterSequence", "Text to enter");
-    WebElement innerDOMElement1 = clickElementShadowDOM(((RemoteWebDriver)driver), params);
+    WebElement innerDOMElement1 = sendKeysShadowDOM(((RemoteWebDriver)driver), params);
 
 ### Parameters:
   | Name | Type | Description |
@@ -128,7 +151,7 @@ This method enters text on the first matching element of the specified CSS locat
   | characterSequence (Mandatory) | String | The text to insert in the edit field |
 
 ### getTextShadowDOM:
-This method returns the text of the provided CSS locator matching Webelement.
+This method returns the text of the first matching shadow DOM element of the specified CSS locator.
 
 ### Example: -
     WebElement homeEleShadowParent = driver.findElement(By.cssSelector("[page='home']"));
@@ -144,7 +167,7 @@ This method returns the text of the provided CSS locator matching Webelement.
   | innerSelector (Mandatory) | String | CSS-selector of the shadow DOM inner element to search for |
 
 ### getAttributeShadowDOM:
-This method returns the value of the given attribute of the provided CSS locator matching Webelement.
+This method returns the value of the given attribute of the first matching shadow DOM element of the specified CSS locator.
 
 ### Example: -
     WebElement homeEleShadowParent = driver.findElement(By.cssSelector("[page='home']"));
@@ -163,23 +186,26 @@ This method returns the value of the given attribute of the provided CSS locator
 
 ## Working with Nested Shadow DOM Elements:
 * Working with nested shadow DOM elements is similar to working with single level shadow DOM elements.
-* First, we will try to get the WebElement of the Shadow-root using findElementShadowDOM method, Now provide this root WebElement as a “parentElement” to next root element, and proceed until we reach the final Shadow Root element.
+* First, we will first get the WebElement of the Shadow-root using findElementShadowDOM method, provide this root WebElement as a “parentElement” to its child shadow DOM element and proceed until we reach the final Shadow DOM element.
+
 ### Example:
-    WebElement parentShadowEle = driver.findElement(By.xpath("//vt-virustotal-app"));	
-    Map<String, Object> params = new HashMap<>();
-    params.put("parentElement", parentShadowEle);
-    params.put("innerSelector", "home-view.iron-selected");
-    WebElement innerDOMElement1 = findElementShadowDOM(driver, params);
+    //Find the parent Shadow DOM element
+	WebElement parentShadowEle = driver.findElement(By.xpath("//vt-virustotal-app"));
+	Map<String, Object> params = new HashMap<>();
+	params.put("parentElement", parentShadowEle);
+	params.put("innerSelector", "home-view.iron-selected");
+	WebElement innerDOMElement1 = findElementShadowDOM(driver, params);
 
-    Map<String, Object> params2 = new HashMap<>();
-    params2.put("parentElement", innerDOMElement1);
-    params2.put("innerSelector", "#urlSearchInput");
-    WebElement innerDOMElement2 = findElementShadowDOM(driver, params);
+	Map<String, Object> params2 = new HashMap<>();
+	params2.put("parentElement", innerDOMElement1);
+	params2.put("innerSelector", "#urlSearchInput");
+	WebElement innerDOMElement2 = findElementShadowDOM(driver, params);
 
-    Map<String, Object> params3 = new HashMap<>();
-    params3.put("parentElement", innerDOMElement2);
-    params3.put("innerSelector", "input#input");
-    params3.put("characterSequence", "Text to Enter");
-    sendKeyShadowDOM(driver, params);
+	//Find until the final Shadow DOM element is found.
+	Map<String, Object> params3 = new HashMap<>();
+	params3.put("parentElement", innerDOMElement2);
+	params3.put("innerSelector", "input#input");
+	WebElement finalShadowDOMElement = findElementShadowDOM (driver, params);
+
 
 Kindly reach out to [Professional Services](https://www.perfecto.io/services/professional-services-implementation) team of Perfecto to implement this in your Organization.
