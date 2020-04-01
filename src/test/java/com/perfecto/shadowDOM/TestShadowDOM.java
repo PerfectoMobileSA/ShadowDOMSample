@@ -1,27 +1,19 @@
 package com.perfecto.shadowDOM;
 
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.DriverCommand;
-import org.openqa.selenium.remote.RemoteExecuteMethod;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -97,9 +89,13 @@ public class TestShadowDOM {
 
 	@Test
 	public void testShadowInputText() throws InterruptedException {
+		driver.get("https://www.google.com");
+		report.reportiumAssert("Google page Validation.", driver.findElement(By.cssSelector("#hplogo")).isDisplayed());
+		
 		driver.get("https://www.virustotal.com/gui/home/url");
 
-		WebElement parentShadowEle = driver.findElement(By.xpath("//vt-virustotal-app"));
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		WebElement parentShadowEle = wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//vt-virustotal-app"))));
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("parentElement", parentShadowEle);
@@ -208,7 +204,6 @@ public class TestShadowDOM {
 			driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
-
 	}
 
 }

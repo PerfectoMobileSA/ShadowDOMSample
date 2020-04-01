@@ -21,7 +21,7 @@
 		<parameter name="browserName" value="Safari" />
 		<parameter name="model" value="iPhone.*" />
 		<classes>
-			<class name="com.perfecto.shadowDOM.TestShadowDOM" />
+			<class name="com.perfecto.shadowDOM.TestShadowDOM"/>
 		</classes>
 	</test>
 
