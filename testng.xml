@@ -68,7 +68,7 @@
 		</classes>
 	</test>
 
-	<test name="Test Shadow DOM Local Chrome" enabled="true">
+	<test name="Test Shadow DOM Local Chrome" enabled="flase">
 		<parameter name="browser" value="chrome" />
 		<parameter name="deviceType" value="web" />
 		<classes>
