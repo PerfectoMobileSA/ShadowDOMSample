@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="10" name="GoogleTest" parallel="tests">
+	<!-- <suite name="Smoke Test"> -->
+
+	<parameter name="cloudUrl" value="Your Cloud URL" />
+	<parameter name="securityToken" value="Your SecurityToken" />
+	<parameter name="jobName" value="Shadow DOM Test" />
+	<parameter name="jobNumber" value="17" />
+
+	<test name="Test Shadow DOM Android" enabled="true">
+		<parameter name="browser" value="perfecto" />
+		<parameter name="deviceType" value="mobile" />
+		<parameter name="platformName" value="android" />
+		<parameter name="browserName" value="Chrome" />
+		<parameter name="model" value="Galaxy.*" />
+		<classes>
+			<class name="com.perfecto.shadowDOM.TestShadowDOM" />
+		</classes>
+	</test>
+
+	<test name="Test Shadow DOM iOS" enabled="true">
+		<parameter name="browser" value="perfecto" />
+		<parameter name="deviceType" value="mobile" />
+		<parameter name="platformName" value="iOS" />
+		<parameter name="browserName" value="Safari" />
+		<parameter name="model" value="iPhone.*" />
+		<classes>
+			<class name="com.perfecto.shadowDOM.TestShadowDOM" />
+		</classes>
+	</test>
+
+
+	<test name="Test Shadow DOM Windows Chrome" enabled="true">
+		<parameter name="browser" value="perfecto" />
+		<parameter name="deviceType" value="web" />
+		<parameter name="platformName" value="Windows" />
+		<parameter name="platformVersion" value="10" />
+		<parameter name="browserVersion" value="beta" />
+		<parameter name="browserName" value="Chrome" />
+		<parameter name="location" value="AP Sydney" />
+		<parameter name="resolution" value="1024x768" />
+		<classes>
+			<class name="com.perfecto.shadowDOM.TestShadowDOM" />
+		</classes>
+	</test>
+
+	<test name="Test Shadow DOM Windows Firefox" enabled="true">
+		<parameter name="browser" value="perfecto" />
+		<parameter name="deviceType" value="web" />
+		<parameter name="platformName" value="Windows" />
+		<parameter name="platformVersion" value="10" />
+		<parameter name="browserVersion" value="beta" />
+		<parameter name="browserName" value="Firefox" />
+		<parameter name="location" value="AP Sydney" />
+		<parameter name="resolution" value="1024x768" />
+		<classes>
+			<class name="com.perfecto.shadowDOM.TestShadowDOM" />
+		</classes>
+	</test>
+
+	<test name="Test Shadow DOM Mac Safari" enabled="true">
+		<parameter name="browser" value="perfecto" />
+		<parameter name="deviceType" value="web" />
+		<parameter name="platformName" value="Mac" />
+		<parameter name="platformVersion" value="macOS Mojave" />
+		<parameter name="browserVersion" value="12" />
+		<parameter name="browserName" value="Safari" />
+		<parameter name="location" value="NA-US-BOS" />
+		<parameter name="resolution" value="1024x768" />
+		<classes>
+			<class name="com.perfecto.shadowDOM.TestShadowDOM" />
+		</classes>
+	</test>
+
+	<test name="Test Shadow DOM Local Chrome" enabled="true">
+		<parameter name="browser" value="chrome" />
+		<parameter name="deviceType" value="web" />
+		<classes>
+			<class name="com.perfecto.shadowDOM.TestShadowDOM">
+			</class>
+		</classes>
+	</test>
+
+</suite>  
