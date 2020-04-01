@@ -68,6 +68,8 @@ Note: Refer to official documentation on how to execute from eclipse / IntelliJ.
 
 ## Shadow DOM methods:
 
+* We are using [Shop Polymer](https://shop.polymer-project.org/) in this sample project.
+
 ### findElementShadowDOM:
 This method finds first web element matching the CSS selector and returns it.
 
